@@ -1,5 +1,6 @@
 using DevIO.Api.Configuration;
 using DevIO.Data.Context;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,13 @@ builder.Services.AddDbContext<MeuDbContext>(options =>
 //builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddWebApiConfig();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
+
 builder.Services.ResolveDependencies();
 
 var app = builder.Build();
@@ -35,5 +43,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseWebApiConfig();
 
 app.Run();

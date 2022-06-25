@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>b7eed0b7-ab47-4287-8235-e20ea2fb2b48</UserSecretsId>
   </PropertyGroup>
@@ -19,6 +18,10 @@
   <ItemGroup>
     <ProjectReference Include="..\DevIO.Business\DevIO.Business.csproj" />
     <ProjectReference Include="..\DevIO.Data\DevIO.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\imagens\" />
   </ItemGroup>
 
 </Project>
