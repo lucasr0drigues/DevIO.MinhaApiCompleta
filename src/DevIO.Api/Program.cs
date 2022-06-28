@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
         })
+        .AddIdentityConfiguration(builder.Configuration)
         //.AddIdentityConfiguration(builder.Configuration)
         //builder.Services.AddAutoMapper(typeof(Program));
         .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
@@ -31,8 +32,6 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
-    app.UseAuthorization();
 
     app.MapControllers();
 
