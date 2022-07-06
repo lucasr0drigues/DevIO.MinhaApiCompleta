@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using DevIO.Api.Extensions;
 using DevIO.Api.ViewModels;
 using DevIO.Business.Intefaces;
 using DevIO.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevIO.Api.Controllers
 {
-    [ApiController]
+    [Authorize]
     [Route("api/produtos")]
     public class ProdutosController : MainController
     {
@@ -14,7 +16,7 @@ namespace DevIO.Api.Controllers
         private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
-        public ProdutosController(INotificador notificador, IProdutoRepository produtoRepository, IProdutoService produtoService, IMapper mapper) : base(notificador)
+        public ProdutosController(INotificador notificador, IProdutoRepository produtoRepository, IProdutoService produtoService, IMapper mapper, IUser user) : base(notificador,user)
         {
             _produtoRepository = produtoRepository;
             _produtoService = produtoService;
@@ -37,8 +39,8 @@ namespace DevIO.Api.Controllers
             return produtoViewModel;
         }
 
+        [ClaimsAuthorize("Produto","Adicionar")]
         [HttpPost]
-
         public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -56,6 +58,7 @@ namespace DevIO.Api.Controllers
             return CustomResponse(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produto", "Atualizar")]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Atualizar(Guid id,ProdutoViewModel produtoViewModel)
         {
@@ -92,9 +95,8 @@ namespace DevIO.Api.Controllers
         }
 
 
-
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [HttpPost("adicionar")]
-
         public async Task<ActionResult<ProdutoImagemViewModel>> AdicionarAlternativo(ProdutoImagemViewModel produtoImagemViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -120,6 +122,7 @@ namespace DevIO.Api.Controllers
             return Ok(file);
         }
 
+        [ClaimsAuthorize("Produto", "Excluir")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<ProdutoViewModel>> Excluir(Guid id)
         {
