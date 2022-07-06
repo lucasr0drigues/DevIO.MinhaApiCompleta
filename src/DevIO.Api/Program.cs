@@ -35,7 +35,7 @@ var app = builder.Build();
 
     app.MapControllers();
 
-    app.UseWebApiConfig();
+    app.UseWebApiConfig(app.Environment);
 
     app.Run();
 }

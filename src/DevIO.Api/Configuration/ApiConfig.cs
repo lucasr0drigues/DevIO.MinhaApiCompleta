@@ -17,8 +17,17 @@
             return services;
         }
 
-        public static IApplicationBuilder UseWebApiConfig(this WebApplication app)
+        public static IApplicationBuilder UseWebApiConfig(this WebApplication app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+
+            }
+            else
+            {
+                app.UseHsts();
+            }
+
             app.UseHttpsRedirection();
 
             app.UseCors("Development");
