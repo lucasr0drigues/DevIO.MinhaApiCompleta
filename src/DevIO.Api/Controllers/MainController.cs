@@ -34,7 +34,7 @@ namespace DevIO.Api.Controllers
 
         protected ActionResult CustomResponse(object result = null)
         {
-            if(OperacaoValida())
+            if (OperacaoValida())
             {
                 return Ok(new
                 {
@@ -70,6 +70,6 @@ namespace DevIO.Api.Controllers
         {
             _notificador.Handle(new Notificacao(mensagem));
         }
-        
+
     }
 }
