@@ -1,13 +1,13 @@
 using DevIO.Api.Configuration;
 using DevIO.Data.Context;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services
         .AddEndpointsApiExplorer()
-        .AddSwaggerGen()
         .AddDbContext<MeuDbContext>(options =>
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -17,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
         //builder.Services.AddAutoMapper(typeof(Program));
         .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
         .AddWebApiConfig()
+        .AddSwaggerConfig()
         .Configure<ApiBehaviorOptions>(options =>
         {
             options.SuppressModelStateInvalidFilter = true;
@@ -27,15 +28,13 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 {
     // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+
+    var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
     app.MapControllers();
 
     app.UseWebApiConfig(app.Environment);
+    app.UseSwaggerConfig(apiVersionDescriptionProvider);
 
     app.Run();
 }
